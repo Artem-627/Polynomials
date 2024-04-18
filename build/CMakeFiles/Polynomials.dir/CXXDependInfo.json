@@ -1,0 +1,21 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "Clang",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "/home/artem627/CLionProjects/Polynomials/build",
+	"dir-cur-src" : "/home/artem627/CLionProjects/Polynomials",
+	"dir-top-bld" : "/home/artem627/CLionProjects/Polynomials/build",
+	"dir-top-src" : "/home/artem627/CLionProjects/Polynomials",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : 
+	[
+		"/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/Polynomial_modules.dir"
+	],
+	"module-dir" : "/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/Polynomials.dir"
+}
