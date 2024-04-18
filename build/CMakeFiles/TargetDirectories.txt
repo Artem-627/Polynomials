@@ -1,4 +1,0 @@
-/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/Polynomial_modules.dir
-/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/Polynomials.dir
-/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/edit_cache.dir
-/home/artem627/CLionProjects/Polynomials/build/CMakeFiles/rebuild_cache.dir
