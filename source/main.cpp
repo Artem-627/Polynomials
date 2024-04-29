@@ -1,9 +1,16 @@
-import Monomial;
-
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello, World!" << std::endl;
+#include "Monomials/Monomial.h"
+
+int main() {
+    std::cout << "Hello, World!" << '\n';
+
+    auto m = Monomial("x^2y^3");
+    std::cout << m.getValue() << '\n';
+    for (char a = 'a'; a < 'z'; ++a) {
+        // if (m.getPower(a) > 0)
+            std::cout << a << ": " << m.getPower(a) << '\n';
+    }
+
     return 0;
 }

@@ -1,25 +1,33 @@
 cmake_minimum_required(VERSION 3.28)
-project(Polynomials)
+project(Polynomials-root)
 
+
+# Set cmake flags
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_SCAN_FOR_MODULES ON)
-set(PREBUILT_MODULE_PATH ${CMAKE_BINARY_DIR}/engine/modules)
-
-#include(CTest)
 
 
-file(GLOB_RECURSE TEST_MODULE_FILES
-        modules/Monomial.cppm
-)
-add_library(Polynomial_modules)
-target_sources(Polynomial_modules PUBLIC
-        FILE_SET CXX_MODULES
-        FILES modules/Monomial.cppm
+# Including files
+file(GLOB_RECURSE MODULE_HEADERS
+        source/Monomials/Monomial.h
+        source/Monomials/MonomialFiniteStateMachine.h
+        source/Monomials/MonomialFiniteStateMachineStates.h
+        source/Monomials/MonomialExceptions.h
 )
 
-add_executable(Polynomials
-        source/main.cpp
+file(GLOB_RECURSE MODULES_CPP
+        source/Monomials/Monomial.cpp
+        source/Monomials/MonomialFiniteStateMachine.cpp
+        source/Monomials/MonomialFiniteStateMachineStates.cpp
+        source/Monomials/MonomialExceptions.cpp
 )
 
-target_link_libraries(Polynomials Polynomial_modules)
+
+# Adding source
+add_subdirectory(source)
+# Adding tests
+add_subdirectory(tests)
+
+
+# Enabling tests
+enable_testing()
+add_test(NAME gtest_tests COMMAND tests/tests --gtest_output=xml:./ctest-tests.xml)
