@@ -37,18 +37,22 @@ namespace FSM {
     private:
         std::string input;
         bool sign = false;
-        int value = 0;
+        int value = 1;
         std::vector<std::uint16_t> *powers = new std::vector<std::uint16_t>(26, 0);
 
+        /// Set all powers to 0 if value is 0
+        void clearPowers() const;
+
+        /// Get event type from current symbol
         [[nodiscard]]
         event getEvent(char const &symbol) const;
 
         /// Process event
         state processEvent(state const &curr_state, event const &curr_event);
 
-
         /// Begin
         state onEvent(states::Begin const &curr_state, events::Number const &curr_event);
+        state onEvent(states::Begin const &curr_state, events::Letter const &curr_event);
         state onEvent(states::Begin const &curr_state, events::Sign const &curr_event);
 
         /// Sign

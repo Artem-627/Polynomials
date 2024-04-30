@@ -5,7 +5,7 @@
 int main() {
     std::cout << "Hello, World!" << '\n';
 
-    auto m = Monomial("x^2y^3");
+    auto m = Monomial("0d^1");
     std::cout << m.getValue() << '\n';
     for (char a = 'a'; a < 'z'; ++a) {
         // if (m.getPower(a) > 0)

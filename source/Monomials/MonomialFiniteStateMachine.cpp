@@ -28,6 +28,10 @@ FSM::ReadMonomial::ReadMonomial(std::string const &str) {
         curr_state = processEvent(curr_state, curr_event);
         ++curr_symbol;
     }
+
+    if (value == 0) {
+        clearPowers();
+    }
 }
 
 /// Getters
@@ -45,6 +49,10 @@ FSM::ReadMonomial::~ReadMonomial() {
     delete powers;
 }
 
+
+void FSM::ReadMonomial::clearPowers() const {
+    std::ranges::fill(powers->begin(), powers->end(), 0);
+}
 
 event FSM::ReadMonomial::getEvent(char const &symbol) const {
     event result;
@@ -76,15 +84,22 @@ state FSM::ReadMonomial::processEvent(state const &curr_state, event const &curr
     return result;
 }
 
+/// Default state
 state FSM::ReadMonomial::onEvent(state const &curr_state, event const &curr_event) {
     std::cerr << "[Default onEvent() was called]" << '\n';
 
     return states::End{};
 }
 
+/// Begin
 state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Number const &curr_event) {
     return states::Coefficient{std::string(1, curr_event.symbol)};
 }
+
+state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Letter const &curr_event) {
+    return states::Variable{curr_event.symbol};
+}
+
 state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Sign const &curr_event) {
     return states::Sign{curr_event.symbol};
 }
@@ -93,23 +108,26 @@ state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Sign c
 state FSM::ReadMonomial::onEvent(states::Sign const &curr_state, events::Number const &curr_event) {
     applyState(curr_state);
 
-    return states::Coefficient{""};
+    return states::Coefficient{std::string(1, curr_event.symbol)};
 }
+
 state FSM::ReadMonomial::onEvent(states::Sign const &curr_state, events::Letter const &curr_event) {
     applyState(curr_state);
 
-    return states::Variable{};
+    return states::Variable{curr_event.symbol};
 }
 
 /// Coefficient
 state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::Number const &curr_event) {
     return states::Coefficient{curr_state.curr_coefficient + curr_event.symbol};
 }
+
 state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::Letter const &curr_event) {
     applyState(curr_state);
 
     return states::Variable{curr_event.symbol};
 }
+
 state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::End const &curr_event) {
     applyState(curr_state);
 
@@ -120,11 +138,13 @@ state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::
 state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::Caret const &curr_event) {
     return states::Caret{curr_state.variable};
 }
+
 state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::Letter const &curr_event) {
     applyState(curr_state);
 
     return states::Variable{curr_event.symbol};
 }
+
 state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::End const &curr_event) {
     applyState(curr_state);
 
@@ -133,18 +153,20 @@ state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::End
 
 /// Caret
 state FSM::ReadMonomial::onEvent(states::Caret const &curr_state, events::Number const &curr_event) {
-    return states::Power{curr_state.variable, std::to_string(curr_event.symbol - '0')};
+    return states::Power{curr_state.variable, std::string(1, curr_event.symbol)};
 }
 
 /// Power
 state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::Number const &curr_event) {
     return states::Power{curr_state.variable, curr_state.curr_power + curr_event.symbol};
 }
+
 state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::Letter const &curr_event) {
     applyState(curr_state);
 
     return states::Variable{curr_event.symbol};
 }
+
 state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::End const &curr_event) {
     applyState(curr_state);
 
@@ -155,12 +177,15 @@ state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::End co
 void FSM::ReadMonomial::applyState(states::Sign const &curr_state) {
     sign = (curr_state.sign == '-');
 }
+
 void FSM::ReadMonomial::applyState(states::Coefficient const &curr_state) {
     value = std::stoi(curr_state.curr_coefficient);
 }
+
 void FSM::ReadMonomial::applyState(states::Variable const &curr_state) {
     ++powers->at(curr_state.variable - 'a');
 }
+
 void FSM::ReadMonomial::applyState(states::Power const &curr_state) {
     powers->at(curr_state.variable - 'a') += std::stoi(curr_state.curr_power);
 }
