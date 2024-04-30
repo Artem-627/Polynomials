@@ -71,7 +71,7 @@ Monomial Monomial::getDerivative(char const &variable) const {
 [[nodiscard]]
 std::int64_t Monomial::calculate(std::map <char, std::int64_t> const &variables_values) const {
     for (int i = 0; i < powers->size(); ++i) {
-        if (powers->at(i) > 0 && variables_values.contains('a' + i)) {
+        if (powers->at(i) > 0 && !variables_values.contains('a' + i)) {
             throw std::logic_error("Variable not found");
         }
     }
