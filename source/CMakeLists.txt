@@ -15,4 +15,7 @@ add_executable(${PROJECT_NAME}
 
         Monomials/MonomialExceptions.h
         Monomials/MonomialExceptions.cpp
+
+
+        List/List.h
 )

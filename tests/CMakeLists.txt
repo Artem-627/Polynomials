@@ -10,7 +10,8 @@ pkg_check_modules(gtest gtest>=1.10)
 include(GoogleTest)
 
 
-set (TESTS
+set(TESTS
+        List_tests.cpp
         Monomial_tests.cpp
 )
 
@@ -18,13 +19,16 @@ set (TESTS
 add_executable(${PROJECT_NAME}
         ${TESTS}
         main.cpp
-        ../source/Monomials/Monomial.cpp
-        ../source/Monomials/MonomialFiniteStateMachine.cpp
-        ../source/Monomials/MonomialExceptions.cpp
+
         ../source/Monomials/Monomial.h
-        ../source/Monomials/MonomialFiniteStateMachine.h
-        ../source/Monomials/MonomialFiniteStateMachineStates.h
+        ../source/Monomials/Monomial.cpp
         ../source/Monomials/MonomialExceptions.h
+        ../source/Monomials/MonomialExceptions.cpp
+        ../source/Monomials/MonomialFiniteStateMachine.h
+        ../source/Monomials/MonomialFiniteStateMachine.cpp
+        ../source/Monomials/MonomialFiniteStateMachineStates.h
+
+        ../source/List/List.h
 )
 
 # Adding libraries
@@ -41,6 +45,6 @@ target_link_libraries(${PROJECT_NAME}
 
 # Connecting tests
 gtest_add_tests(TARGET ${PROJECT_NAME}
-        TEST_SUFFIX     .noArgs
-        TEST_LIST       noArgsTests
+        TEST_SUFFIX .noArgs
+        TEST_LIST noArgsTests
 )

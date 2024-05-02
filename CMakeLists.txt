@@ -1,25 +1,11 @@
 cmake_minimum_required(VERSION 3.28)
 project(Polynomials-root)
 
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # Set cmake flags
 set(CMAKE_CXX_STANDARD 23)
-
-
-# Including files
-file(GLOB_RECURSE MODULE_HEADERS
-        source/Monomials/Monomial.h
-        source/Monomials/MonomialFiniteStateMachine.h
-        source/Monomials/MonomialFiniteStateMachineStates.h
-        source/Monomials/MonomialExceptions.h
-)
-
-file(GLOB_RECURSE MODULES_CPP
-        source/Monomials/Monomial.cpp
-        source/Monomials/MonomialFiniteStateMachine.cpp
-        source/Monomials/MonomialFiniteStateMachineStates.cpp
-        source/Monomials/MonomialExceptions.cpp
-)
 
 
 # Adding source

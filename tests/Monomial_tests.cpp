@@ -212,7 +212,7 @@ TEST(MonomailConstructorTest, NormalMonomials) {
 
 
 /// Operator + for monomials
-TEST(MonomialAddTest, Monomials_Addition_SamePowers) {
+TEST(MonomialAddTest, MonomialsAdditionSamePowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^2b^3");
     Monomial result = first + second;
@@ -222,14 +222,14 @@ TEST(MonomialAddTest, Monomials_Addition_SamePowers) {
     EXPECT_EQ(result.getPower('b'), 3);
 }
 
-TEST(MonomialAddTest, Monomials_Addition_DifferentPowers) {
+TEST(MonomialAddTest, MonomialsAdditionDifferentPowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^3b^2");
 
     EXPECT_THROW(first + second, std::logic_error);
 }
 
-TEST(MonomialAddTest, Monomials_Addition_ZeroResult) {
+TEST(MonomialAddTest, MonomialsAdditionZeroResult) {
     Monomial first("3a^2b^3");
     Monomial second("-3a^2b^3");
     Monomial result = first + second;
@@ -237,14 +237,14 @@ TEST(MonomialAddTest, Monomials_Addition_ZeroResult) {
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialAddTest, Monomials_Addition_DifferentVariables) {
+TEST(MonomialAddTest, MonomialsAdditionDifferentVariables) {
     Monomial first("3a^2b^3");
     Monomial second("2c^2d^3");
 
     EXPECT_THROW(first + second, std::logic_error);
 }
 
-TEST(MonomialAddTest, Monomials_Addition_WithoutVariables) {
+TEST(MonomialAddTest, MonomialsAdditionWithoutVariables) {
     Monomial first("3");
     Monomial second("2");
     Monomial result = first + second;
@@ -254,7 +254,7 @@ TEST(MonomialAddTest, Monomials_Addition_WithoutVariables) {
 
 
 /// Operator - for monomials
-TEST(MonomialSumTest, Monomials_Substration_SamePowers) {
+TEST(MonomialSumTest, MonomialsSubstrationSamePowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^2b^3");
     Monomial result = first - second;
@@ -264,14 +264,14 @@ TEST(MonomialSumTest, Monomials_Substration_SamePowers) {
     EXPECT_EQ(result.getPower('b'), 3);
 }
 
-TEST(MonomialSumTest, Monomials_Substration_DifferentPowers) {
+TEST(MonomialSumTest, MonomialsSubstrationDifferentPowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^3b^2");
 
     EXPECT_THROW(first - second, std::logic_error);
 }
 
-TEST(MonomialSumTest, Monomials_Substration_ZeroResult) {
+TEST(MonomialSumTest, MonomialsSubstrationZeroResult) {
     Monomial first("3a^2b^3");
     Monomial second("3a^2b^3");
     Monomial result = first - second;
@@ -279,14 +279,14 @@ TEST(MonomialSumTest, Monomials_Substration_ZeroResult) {
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialSumTest, Monomials_Substration_DifferentVariables) {
+TEST(MonomialSumTest, MonomialsSubstrationDifferentVariables) {
     Monomial first("3a^2b^3");
     Monomial second("2c^2d^3");
 
     EXPECT_THROW(first - second, std::logic_error);
 }
 
-TEST(MonomialSumTest, Monomials_Substration_WithoutVariables) {
+TEST(MonomialSumTest, MonomialsSubstrationWithoutVariables) {
     Monomial first("3");
     Monomial second("2");
     Monomial result = first - second;
@@ -296,7 +296,7 @@ TEST(MonomialSumTest, Monomials_Substration_WithoutVariables) {
 
 
 /// Operator * for monomials
-TEST(MonomialMultTest, Monomials_Multiplication_SamePowers) {
+TEST(MonomialMultTest, MonomialsMultiplicationSamePowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^2b^3");
     Monomial result = first * second;
@@ -306,7 +306,7 @@ TEST(MonomialMultTest, Monomials_Multiplication_SamePowers) {
     EXPECT_EQ(result.getPower('b'), 6);
 }
 
-TEST(MonomialMultTest, Monomials_Multiplication_DifferentPowers) {
+TEST(MonomialMultTest, MonomialsMultiplicationDifferentPowers) {
     Monomial first("3a^2b^3");
     Monomial second("2a^3b^2");
     Monomial result = first * second;
@@ -316,7 +316,7 @@ TEST(MonomialMultTest, Monomials_Multiplication_DifferentPowers) {
     EXPECT_EQ(result.getPower('b'), 5);
 }
 
-TEST(MonomialMultTest, Monomials_Multiplication_ZeroCoefficient) {
+TEST(MonomialMultTest, MonomialsMultiplicationZeroCoefficient) {
     Monomial first("0a^2b^3");
     Monomial second("2a^2b^3");
     Monomial result = first * second;
@@ -324,7 +324,7 @@ TEST(MonomialMultTest, Monomials_Multiplication_ZeroCoefficient) {
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialMultTest, Monomials_Multiplication_MultipleVariables) {
+TEST(MonomialMultTest, MonomialsMultiplicationMultipleVariables) {
     Monomial first("3a^2b^3c^4");
     Monomial second("2a^2b^3c^4");
     Monomial result = first * second;
@@ -335,7 +335,7 @@ TEST(MonomialMultTest, Monomials_Multiplication_MultipleVariables) {
     EXPECT_EQ(result.getPower('c'), 8);
 }
 
-TEST(MonomialMultTest, Monomials_Multiplication_SamePowersDifferentOrder) {
+TEST(MonomialMultTest, MonomialsMultiplicationSamePowersDifferentOrder) {
     Monomial first("3a^2b^3c^4");
     Monomial second("2c^4b^3a^2");
     Monomial result = first * second;
@@ -347,7 +347,7 @@ TEST(MonomialMultTest, Monomials_Multiplication_SamePowersDifferentOrder) {
 }
 
 /// Derivative of monomials
-TEST(MonomialDerivativeTest, Monomials_Derivative_SingleVariable) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeSingleVariable) {
     Monomial monomial("3a^2");
     Monomial result = monomial.getDerivative('a');
 
@@ -355,7 +355,7 @@ TEST(MonomialDerivativeTest, Monomials_Derivative_SingleVariable) {
     EXPECT_EQ(result.getPower('a'), 1);
 }
 
-TEST(MonomialDerivativeTest, Monomials_Derivative_MultipleVariables) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeMultipleVariables) {
     Monomial monomial("3a^2b^3");
     Monomial result = monomial.getDerivative('a');
 
@@ -364,28 +364,28 @@ TEST(MonomialDerivativeTest, Monomials_Derivative_MultipleVariables) {
     EXPECT_EQ(result.getPower('b'), 3);
 }
 
-TEST(MonomialDerivativeTest, Monomials_Derivative_ZeroPower) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeZeroPower) {
     Monomial monomial("3a^0b^3");
     Monomial result = monomial.getDerivative('a');
 
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialDerivativeTest, Monomials_Derivative_NonExistentVariable) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeNonExistentVariable) {
     Monomial monomial("3a^2b^3");
     Monomial result = monomial.getDerivative('c');
 
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialDerivativeTest, Monomials_Derivative_Constant) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeConstant) {
     Monomial monomial("3");
     Monomial result = monomial.getDerivative('a');
 
     EXPECT_EQ(result.getValue(), 0);
 }
 
-TEST(MonomialDerivativeTest, Monomials_Derivative_MultiplePowers) {
+TEST(MonomialDerivativeTest, MonomialsDerivativeMultiplePowers) {
     Monomial monomial("3a^2b^3c^4");
     Monomial result = monomial.getDerivative('b');
 
@@ -396,7 +396,7 @@ TEST(MonomialDerivativeTest, Monomials_Derivative_MultiplePowers) {
 }
 
 /// Calculation of monomials
-TEST(MonomialCalculateTest, Monomials_Calculate_SingleVariable) {
+TEST(MonomialCalculateTest, MonomialsCalculateSingleVariable) {
     Monomial monomial("3a^2");
     std::map<char, std::int64_t> variables_values = {{'a', 2}};
     std::int64_t result = monomial.calculate(variables_values);
@@ -404,7 +404,7 @@ TEST(MonomialCalculateTest, Monomials_Calculate_SingleVariable) {
     EXPECT_EQ(result, 12);
 }
 
-TEST(MonomialCalculateTest, Monomials_Calculate_MultipleVariables) {
+TEST(MonomialCalculateTest, MonomialsCalculateMultipleVariables) {
     Monomial monomial("3a^2b^3");
     std::map<char, std::int64_t> variables_values = {{'a', 2}, {'b', 3}};
     std::int64_t result = monomial.calculate(variables_values);
@@ -412,7 +412,7 @@ TEST(MonomialCalculateTest, Monomials_Calculate_MultipleVariables) {
     EXPECT_EQ(result, 324);
 }
 
-TEST(MonomialCalculateTest, Monomials_Calculate_ZeroPower) {
+TEST(MonomialCalculateTest, MonomialsCalculateZeroPower) {
     Monomial monomial("3a^0b^3");
     std::map<char, std::int64_t> variables_values = {{'a', 2}, {'b', 3}};
     std::int64_t result = monomial.calculate(variables_values);
@@ -420,14 +420,14 @@ TEST(MonomialCalculateTest, Monomials_Calculate_ZeroPower) {
     EXPECT_EQ(result, 81);
 }
 
-TEST(MonomialCalculateTest, Monomials_Calculate_NonExistentVariable) {
+TEST(MonomialCalculateTest, MonomialsCalculateNonExistentVariable) {
     Monomial monomial("3a^2b^3");
     std::map<char, std::int64_t> variables_values = {{'a', 2}};
 
     EXPECT_THROW(monomial.calculate(variables_values), std::logic_error);
 }
 
-TEST(MonomialCalculateTest, Monomials_Calculate_Constant) {
+TEST(MonomialCalculateTest, MonomialsCalculateConstant) {
     Monomial monomial("3");
     std::map<char, std::int64_t> variables_values = {{'a', 2}};
     std::int64_t result = monomial.calculate(variables_values);

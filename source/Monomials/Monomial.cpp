@@ -61,15 +61,14 @@ Monomial Monomial::getDerivative(char const &variable) const {
         throw std::logic_error("Invalid variable");
     }
 
-    Monomial result = Monomial(*this);
+    Monomial result(*this);
     result.value *= result.powers->at(variable - 'a');
     --result.powers->at(variable - 'a');
 
     return result;
 };
 
-[[nodiscard]]
-std::int64_t Monomial::calculate(std::map <char, std::int64_t> const &variables_values) const {
+std::int64_t Monomial::calculate(std::map<char, std::int64_t> const &variables_values) const {
     for (int i = 0; i < powers->size(); ++i) {
         if (powers->at(i) > 0 && !variables_values.contains('a' + i)) {
             throw std::logic_error("Variable not found");
@@ -77,7 +76,7 @@ std::int64_t Monomial::calculate(std::map <char, std::int64_t> const &variables_
     }
 
     std::int64_t result = value;
-    for (std::pair <const char, const std::int64_t> curr_variable : variables_values) {
+    for (std::pair<const char, const std::int64_t> curr_variable: variables_values) {
         std::int64_t curr_degree_value = 1;
         for (int curr_degree = 0; curr_degree < this->getPower(curr_variable.first); ++curr_degree) {
             curr_degree_value *= curr_variable.second;

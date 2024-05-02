@@ -34,7 +34,6 @@ public:
     [[nodiscard]]
     Monomial getDerivative(char const &variable) const;
 
-    [[nodiscard]]
     std::int64_t calculate(std::map <char, std::int64_t> const &variables_values) const;
 
 private:
