@@ -1,16 +1,19 @@
 #include <iostream>
 
 #include "Monomials/Monomial.h"
+#include "Polynomials/Polynomial.h"
 
 int main() {
     std::cout << "Hello, World!" << '\n';
 
-    auto m = Monomial("0d^1");
-    std::cout << m.getValue() << '\n';
-    for (char a = 'a'; a < 'z'; ++a) {
-        // if (m.getPower(a) > 0)
-            std::cout << a << ": " << m.getPower(a) << '\n';
-    }
+    auto a = Polynomial("a^2+b");
+    auto b = Polynomial("b+a^2");
+
+    std::cout << (a == b);
+
+    b.sort();
+
+    std::cout << (a == b);
 
     return 0;
 }

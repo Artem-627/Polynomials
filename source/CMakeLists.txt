@@ -18,4 +18,16 @@ add_executable(${PROJECT_NAME}
 
 
         List/List.h
+
+
+        Polynomials/Polynomial.h
+        Polynomials/Polynomial.cpp
+
+        Polynomials/PolynomialExceptions.h
+        Polynomials/PolynomialExceptions.cpp
+
+        Polynomials/PolynomialFiniteStateMachineStates.h
+
+        Polynomials/PolynomialFiniteStateMachine.h
+        Polynomials/PolynomialFiniteStateMachine.cpp
 )

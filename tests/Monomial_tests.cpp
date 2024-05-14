@@ -434,3 +434,60 @@ TEST(MonomialCalculateTest, MonomialsCalculateConstant) {
 
     EXPECT_EQ(result, 3);
 }
+
+/// Comparison of monomials
+TEST(MonomialComparisonTest, MonomialsComparisonSameMonomials) {
+    Monomial first("3a^2b^3");
+    Monomial second("3a^2b^3");
+
+    EXPECT_TRUE(first == second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentMonomials) {
+    Monomial first("3a^2b^3");
+    Monomial second("2a^2b^3");
+
+    EXPECT_TRUE(first == second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentPowersLess) {
+    Monomial first("a^2");
+    Monomial second("b^3");
+
+    EXPECT_TRUE(first < second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentPowersMore) {
+    Monomial first("b^2");
+    Monomial second("a^2");
+
+    EXPECT_TRUE(first > second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentMonomialsDifferentOrder) {
+    Monomial first("3a^2b^3");
+    Monomial second("3a^3b^3");
+
+    EXPECT_TRUE(first > second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentMonomialsDifferentPowers) {
+    Monomial first("3a^2b^2");
+    Monomial second("3a^2b^3");
+
+    EXPECT_TRUE(first > second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentMonomialsDifferentFirstdPowers) {
+    Monomial first("3a^3b^3");
+    Monomial second("3a^2b^3");
+
+    EXPECT_TRUE(first < second);
+}
+
+TEST(MonomialComparisonTest, MonomialsComparisonDifferentMonomialsDifferentSecondPowers) {
+    Monomial first("3a^2b^4");
+    Monomial second("3a^2b^3");
+
+    EXPECT_TRUE(first < second);
+}

@@ -27,13 +27,10 @@ Monomial::Monomial(int const &value)
 
 Monomial::Monomial(std::string const &str) {
     // auto FSM_monomial = FSM::ReadMonomial(str);
-    auto FSM_monomial = FSM::ReadMonomial(str);
+    auto FSM_monomial = Monomial_FSM::ReadMonomial(str);
     this->value = FSM_monomial.getValue();
 
     auto FSM_powers = FSM_monomial.getPowers();
-    // for (int i = 0; i < powers->size(); ++i) {
-    //
-    // }
     std::move(FSM_powers->begin(), FSM_powers->end(), powers->begin());
 }
 
@@ -118,4 +115,44 @@ Monomial operator *(Monomial const &first, Monomial const &second) {
         result.powers->at(i) += second.powers->at(i);
     }
     return result;
+}
+
+
+bool operator ==(Monomial const &first, Monomial const &second) {
+    for (char curr_variable = 'a'; curr_variable <= 'z'; ++curr_variable) {
+        if (first.getPower(curr_variable) != second.getPower(curr_variable)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool operator >(Monomial const &first, Monomial const &second) {
+    if (second == first) {
+        return false;
+    }
+    for (char curr_variable = 'a'; curr_variable <= 'z'; ++curr_variable) {
+        if (first.getPower(curr_variable) > second.getPower(curr_variable)) {
+            return false;
+        }
+        if (first.getPower(curr_variable) < second.getPower(curr_variable)) {
+            return true;
+        }
+    }
+    return true;
+}
+
+bool operator <(Monomial const &first, Monomial const &second) {
+    if (second == first) {
+        return false;
+    }
+    for (char curr_variable = 'a'; curr_variable <= 'z'; ++curr_variable) {
+        if (first.getPower(curr_variable) < second.getPower(curr_variable)) {
+            return false;
+        }
+        if (first.getPower(curr_variable) > second.getPower(curr_variable)) {
+            return true;
+        }
+    }
+    return true;
 }

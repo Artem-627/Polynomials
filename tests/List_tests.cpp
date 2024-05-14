@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "../source/List/List.h"
+#include "../source/Polynomials/Polynomial.h"
 
 TEST(ListBrackets, ListPushBackEmpty) {
     List<int> list;
@@ -215,3 +216,44 @@ TEST(ListSort, ListSortMultipleRandomElements) {
     }
 }
 
+/// Tests for list remove
+TEST(ListRemove, ListRemoveEmpty) {
+    List<int> list;
+    ASSERT_THROW(list.remove(0), std::out_of_range);
+}
+
+TEST(ListRemove, ListRemoveOneElement) {
+    List<int> list;
+    list.pushBack(10);
+    list.remove(0);
+    ASSERT_EQ(list.getSize(), 0);
+}
+
+TEST(ListRemove, ListRemoveMultipleElements) {
+    List<int> list;
+    for (int i = 0; i < 10; ++i) {
+        list.pushBack(i);
+    }
+    list.remove(5);
+    ASSERT_EQ(list.getSize(), 9);
+    for (int i = 0; i < 5; ++i) {
+        ASSERT_EQ(list[i], i);
+    }
+    for (int i = 5; i < 9; ++i) {
+        ASSERT_EQ(list[i], i + 1);
+    }
+}
+
+TEST(ListRemove, ListRemoveMultipleRandomElements) {
+    const uint32_t list_size = 100;
+    List<int> list;
+    for (int i = 0; i < list_size; ++i) {
+        list.pushBack(i);
+    }
+
+    for (int i = 0; i < 100; ++i) {
+        int index = rand() % (100 - i);
+        list.remove(index);
+        ASSERT_EQ(list.getSize(), 99 - i);
+    }
+}

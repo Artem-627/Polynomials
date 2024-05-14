@@ -13,7 +13,9 @@ include(GoogleTest)
 set(TESTS
         List_tests.cpp
         Monomial_tests.cpp
+        Polynomial_tests.cpp
 )
+
 
 
 add_executable(${PROJECT_NAME}
@@ -29,6 +31,14 @@ add_executable(${PROJECT_NAME}
         ../source/Monomials/MonomialFiniteStateMachineStates.h
 
         ../source/List/List.h
+
+        ../source/Polynomials/Polynomial.h
+        ../source/Polynomials/Polynomial.cpp
+        ../source/Polynomials/PolynomialExceptions.h
+        ../source/Polynomials/PolynomialExceptions.cpp
+        ../source/Polynomials/PolynomialFiniteStateMachine.h
+        ../source/Polynomials/PolynomialFiniteStateMachine.cpp
+        ../source/Polynomials/PolynomialFiniteStateMachineStates.h
 )
 
 # Adding libraries

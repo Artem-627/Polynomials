@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 project(Polynomials-root)
 
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
-
 # Set cmake flags
 set(CMAKE_CXX_STANDARD 23)
 

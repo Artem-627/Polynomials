@@ -12,15 +12,15 @@
 #include "MonomialExceptions.h"
 
 
-FSM::ReadMonomial::ReadMonomial(std::string const &str) {
+Monomial_FSM::ReadMonomial::ReadMonomial(std::string const &str) {
     input = str;
 
     auto curr_symbol = str.begin();
-    state curr_state = states::Begin{};
-    while (!std::holds_alternative<states::End>(curr_state)) {
-        event curr_event;
+    monomials::state curr_state = monomials::states::Begin{};
+    while (!std::holds_alternative<monomials::states::End>(curr_state)) {
+        monomials::event curr_event;
         if (curr_symbol == str.end()) {
-            curr_event = events::End{};
+            curr_event = monomials::events::End{};
         } else {
             curr_event = getEvent(*curr_symbol);
         }
@@ -36,42 +36,42 @@ FSM::ReadMonomial::ReadMonomial(std::string const &str) {
 
 /// Getters
 [[nodiscard]]
-int FSM::ReadMonomial::getValue() const {
+int Monomial_FSM::ReadMonomial::getValue() const {
     return (sign ? -this->value : this->value);
 }
 
 [[nodiscard]]
-std::vector<std::uint16_t> *FSM::ReadMonomial::getPowers() const {
+std::vector<std::uint16_t> *Monomial_FSM::ReadMonomial::getPowers() const {
     return this->powers;
 }
 
-FSM::ReadMonomial::~ReadMonomial() {
+Monomial_FSM::ReadMonomial::~ReadMonomial() {
     delete powers;
 }
 
 
-void FSM::ReadMonomial::clearPowers() const {
+void Monomial_FSM::ReadMonomial::clearPowers() const {
     std::ranges::fill(powers->begin(), powers->end(), 0);
 }
 
-event FSM::ReadMonomial::getEvent(char const &symbol) const {
-    event result;
+monomials::event Monomial_FSM::ReadMonomial::getEvent(char const &symbol) const {
+    monomials::event result;
     if (symbol >= 'a' && symbol <= 'z') {
-        result = events::Letter{symbol};
+        result = monomials::events::Letter{symbol};
     } else if (symbol >= '0' && symbol <= '9') {
-        result = events::Number{symbol};
+        result = monomials::events::Number{symbol};
     } else if (symbol == '^') {
-        result = events::Caret{symbol};
+        result = monomials::events::Caret{symbol};
     } else if (symbol == '-' || symbol == '+') {
-        result = events::Sign{symbol};
+        result = monomials::events::Sign{symbol};
     } else {
         throw monomial_error::UnknownSymbol(input);
     }
     return result;
 }
 
-state FSM::ReadMonomial::processEvent(state const &curr_state, event const &curr_event) {
-    state result;
+monomials::state Monomial_FSM::ReadMonomial::processEvent(monomials::state const &curr_state, monomials::event const &curr_event) {
+    monomials::state result;
     std::visit(
         overload{
             [this, &result](auto const &state_, auto const &event_) {
@@ -85,107 +85,107 @@ state FSM::ReadMonomial::processEvent(state const &curr_state, event const &curr
 }
 
 /// Default state
-state FSM::ReadMonomial::onEvent(state const &curr_state, event const &curr_event) {
-    std::cerr << "[Default onEvent() was called]" << '\n';
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::state const &curr_state, monomials::event const &curr_event) {
+    std::cerr << "[Default ReadMonomial::onEvent() was called]" << '\n';
 
-    return states::End{};
+    return monomials::states::End{};
 }
 
 /// Begin
-state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Number const &curr_event) {
-    return states::Coefficient{std::string(1, curr_event.symbol)};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Begin const &curr_state, monomials::events::Number const &curr_event) {
+    return monomials::states::Coefficient{std::string(1, curr_event.symbol)};
 }
 
-state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Letter const &curr_event) {
-    return states::Variable{curr_event.symbol};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Begin const &curr_state, monomials::events::Letter const &curr_event) {
+    return monomials::states::Variable{curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Begin const &curr_state, events::Sign const &curr_event) {
-    return states::Sign{curr_event.symbol};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Begin const &curr_state, monomials::events::Sign const &curr_event) {
+    return monomials::states::Sign{curr_event.symbol};
 }
 
 /// Sign
-state FSM::ReadMonomial::onEvent(states::Sign const &curr_state, events::Number const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Sign const &curr_state, monomials::events::Number const &curr_event) {
     applyState(curr_state);
 
-    return states::Coefficient{std::string(1, curr_event.symbol)};
+    return monomials::states::Coefficient{std::string(1, curr_event.symbol)};
 }
 
-state FSM::ReadMonomial::onEvent(states::Sign const &curr_state, events::Letter const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Sign const &curr_state, monomials::events::Letter const &curr_event) {
     applyState(curr_state);
 
-    return states::Variable{curr_event.symbol};
+    return monomials::states::Variable{curr_event.symbol};
 }
 
 /// Coefficient
-state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::Number const &curr_event) {
-    return states::Coefficient{curr_state.curr_coefficient + curr_event.symbol};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Coefficient const &curr_state, monomials::events::Number const &curr_event) {
+    return monomials::states::Coefficient{curr_state.curr_coefficient + curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::Letter const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Coefficient const &curr_state, monomials::events::Letter const &curr_event) {
     applyState(curr_state);
 
-    return states::Variable{curr_event.symbol};
+    return monomials::states::Variable{curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Coefficient const &curr_state, events::End const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Coefficient const &curr_state, monomials::events::End const &curr_event) {
     applyState(curr_state);
 
-    return states::End{};
+    return monomials::states::End{};
 }
 
 /// Variable
-state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::Caret const &curr_event) {
-    return states::Caret{curr_state.variable};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Variable const &curr_state, monomials::events::Caret const &curr_event) {
+    return monomials::states::Caret{curr_state.variable};
 }
 
-state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::Letter const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Variable const &curr_state, monomials::events::Letter const &curr_event) {
     applyState(curr_state);
 
-    return states::Variable{curr_event.symbol};
+    return monomials::states::Variable{curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Variable const &curr_state, events::End const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Variable const &curr_state, monomials::events::End const &curr_event) {
     applyState(curr_state);
 
-    return states::End{};
+    return monomials::states::End{};
 }
 
 /// Caret
-state FSM::ReadMonomial::onEvent(states::Caret const &curr_state, events::Number const &curr_event) {
-    return states::Power{curr_state.variable, std::string(1, curr_event.symbol)};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Caret const &curr_state, monomials::events::Number const &curr_event) {
+    return monomials::states::Power{curr_state.variable, std::string(1, curr_event.symbol)};
 }
 
 /// Power
-state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::Number const &curr_event) {
-    return states::Power{curr_state.variable, curr_state.curr_power + curr_event.symbol};
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Power const &curr_state, monomials::events::Number const &curr_event) {
+    return monomials::states::Power{curr_state.variable, curr_state.curr_power + curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::Letter const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Power const &curr_state, monomials::events::Letter const &curr_event) {
     applyState(curr_state);
 
-    return states::Variable{curr_event.symbol};
+    return monomials::states::Variable{curr_event.symbol};
 }
 
-state FSM::ReadMonomial::onEvent(states::Power const &curr_state, events::End const &curr_event) {
+monomials::state Monomial_FSM::ReadMonomial::onEvent(monomials::states::Power const &curr_state, monomials::events::End const &curr_event) {
     applyState(curr_state);
 
-    return states::End{};
+    return monomials::states::End{};
 }
 
 /// Applying states
-void FSM::ReadMonomial::applyState(states::Sign const &curr_state) {
+void Monomial_FSM::ReadMonomial::applyState(monomials::states::Sign const &curr_state) {
     sign = (curr_state.sign == '-');
 }
 
-void FSM::ReadMonomial::applyState(states::Coefficient const &curr_state) {
+void Monomial_FSM::ReadMonomial::applyState(monomials::states::Coefficient const &curr_state) {
     value = std::stoi(curr_state.curr_coefficient);
 }
 
-void FSM::ReadMonomial::applyState(states::Variable const &curr_state) {
+void Monomial_FSM::ReadMonomial::applyState(monomials::states::Variable const &curr_state) {
     ++powers->at(curr_state.variable - 'a');
 }
 
-void FSM::ReadMonomial::applyState(states::Power const &curr_state) {
+void Monomial_FSM::ReadMonomial::applyState(monomials::states::Power const &curr_state) {
     powers->at(curr_state.variable - 'a') += std::stoi(curr_state.curr_power);
 }

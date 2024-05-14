@@ -34,6 +34,14 @@ public:
         }
     }
 
+    List(std::vector<T> const &src_vector) {
+        head = nullptr;
+        tail = nullptr;
+        for (auto curr_node : src_vector) {
+            pushBack(curr_node);
+        }
+    }
+
     explicit List(T &&other) {
         head = other.head;
         tail = other.tail;
@@ -124,6 +132,39 @@ public:
         return size;
     }
 
+    void remove(std::uint32_t const &index) {
+        if (this->head == nullptr) {
+            throw std::out_of_range("List is empty");
+        }
+        Node* curr_node = this->head;
+        for (int i = 0; i < index; ++i) {
+            if (curr_node->next == nullptr) {
+                throw std::out_of_range("Index out of range");
+            }
+            curr_node = curr_node->next;
+        }
+        if (head == tail) {
+            head = nullptr;
+            tail = nullptr;
+        } else {
+            if (curr_node->next != nullptr) {
+                curr_node->next->prev = curr_node->prev;
+                if (curr_node == head) {
+                    head = curr_node->next;
+                }
+            }
+            if (curr_node->prev != nullptr) {
+                curr_node->prev->next = curr_node->next;
+                if (curr_node == tail) {
+                    tail = curr_node->prev;
+                }
+            }
+        }
+
+        delete curr_node->data;
+        delete curr_node;
+    }
+
 
     void sort() {
         if (head == nullptr) {
@@ -144,6 +185,23 @@ public:
             curr_node = curr_node->next;
         }
         return *curr_node->data;
+    }
+
+    bool operator==(List<T> const &other) const {
+        if (getSize() != other.getSize()) {
+            return 0;
+        }
+        auto this_iter = head;
+        auto other_iter = other.head;
+        while (this_iter != nullptr && other_iter != nullptr) {
+            if (*this_iter->data != *other_iter->data) {
+                return 0;
+            }
+            this_iter = this_iter->next;
+            other_iter = other_iter->next;
+        }
+
+        return 1;
     }
 
 private:
