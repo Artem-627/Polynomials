@@ -37,6 +37,10 @@ public:
 
     std::int64_t calculate(std::map<char, std::int64_t> const &variables_values) const;
 
+    std::string toString() const;
+
+    std::vector<std::uint16_t> getPowers() const;
+
 private:
     std::vector<std::uint16_t> *powers = new std::vector<std::uint16_t>(26, 0);
     int value = 0;

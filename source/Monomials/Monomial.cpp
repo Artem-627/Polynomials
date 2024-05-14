@@ -59,8 +59,15 @@ Monomial Monomial::getDerivative(char const &variable) const {
     }
 
     Monomial result(*this);
-    result.value *= result.powers->at(variable - 'a');
-    --result.powers->at(variable - 'a');
+    if (result.powers->at(variable - 'a') == 0) {
+        result.value = 0;
+        for (int i = 0; i < 26; ++i) {
+            result.powers->at(i) = 0;
+        }
+    } else {
+        result.value *= result.powers->at(variable - 'a');
+        --result.powers->at(variable - 'a');
+    }
 
     return result;
 };
@@ -82,6 +89,35 @@ std::int64_t Monomial::calculate(std::map<char, std::int64_t> const &variables_v
     }
     return result;
 }
+
+std::string Monomial::toString() const {
+    std::string res;
+
+    if (value == 1) {
+        res += "";
+    } else if (value == -1) {
+        res += "-";
+    } else {
+        res += std::to_string(value);
+    }
+
+    for (int variable = 'a'; variable <= 'z'; ++variable) {
+        if (getPower(variable) > 0) {
+            res += variable;
+            if (getPower(variable) != 1) {
+                res += "^";
+                res += std::to_string(getPower(variable));
+            }
+        }
+    }
+
+    return res;
+}
+
+std::vector<std::uint16_t> Monomial::getPowers() const {
+    return *powers;
+}
+
 
 
 Monomial operator +(Monomial const &first, Monomial const &second) {

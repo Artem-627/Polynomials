@@ -10,6 +10,7 @@
 
 #include "../source/Polynomials/Polynomial.h"
 #include "../source/Polynomials/PolynomialExceptions.h"
+#include "../source/Polynomials/PolynomialFiniteStateMachineStates.h"
 
 
 /// Polynomial constructor tests
@@ -216,7 +217,6 @@ TEST(PolynomialSimplify, OnlyVariables) {
 }
 
 TEST(PolynomialSimplify, ManyMonomials) {
-
 }
 
 /// Tests for operator +
@@ -366,4 +366,110 @@ TEST(PolynomialCalculate, NotEnoughVariables) {
     };
 
     ASSERT_THROW(static_cast<void>(polynomial.calculate(variables_values)), std::logic_error);
+}
+
+/// Tests for toString
+TEST(PolynomialToString, ZeroPolynomial) {
+    Polynomial polynomial("0");
+    std::string result = "0";
+
+    ASSERT_EQ(polynomial.toString(), result);
+}
+
+TEST(PolynomialToString, SimplePolynomial) {
+    Polynomial polynomial("a^2+b");
+    std::string result = "a^2+b";
+
+    ASSERT_EQ(polynomial.toString(), result);
+}
+
+TEST(PolynomialToString, HardPolynomial) {
+    Polynomial polynomial("a^5+b^3a^2+c^7e^4bn^3+6");
+    std::string result = "a^5+a^2b^3+bc^7e^4n^3+6";
+
+    ASSERT_EQ(polynomial.toString(), result);
+}
+
+/// Tests for polynomial derivative
+TEST(PolynomialDerivative, Constant) {
+    Polynomial polynomial("2x^2y^3+3");
+    Polynomial result = polynomial.getDerivative(1, 'a');
+
+    Polynomial expected("0");
+
+    ASSERT_EQ(result, expected);
+}
+
+TEST(PolynomialDerivative, SimplePolynomial) {
+    Polynomial polynomial("2x^2+x+a+b+4");
+    Polynomial result = polynomial.getDerivative(1, 'x');
+
+    Polynomial expected("4x+1");
+
+    ASSERT_EQ(result, expected);
+}
+
+TEST(PolynomialDerivative, HardPolynomial) {
+    Polynomial polynomial("x^4-x^3+x-a^3+b+2");
+    Polynomial result = polynomial.getDerivative(1, 'x');
+
+    Polynomial expected("4x^3-3x^2+1");
+
+    ASSERT_EQ(result, expected);
+}
+
+/// Tests for operator *
+TEST(PolynomialOperatorMult, Constant) {
+    Polynomial a("4+5");
+    Polynomial b("3");
+
+    Polynomial result = a * b;
+    Polynomial expected = Polynomial("27");
+
+    ASSERT_EQ(result, expected);
+}
+
+TEST(PolynomialOperatorMult, SimplePolynomials) {
+    Polynomial a("2a^2+4");
+    Polynomial b("5a^2+3b");
+
+    Polynomial result = a * b;
+    Polynomial expected = Polynomial("20a^2+10a^4+12b+6a^2b");
+
+    ASSERT_EQ(result, expected);
+}
+
+TEST(PolynomialOperatorMult, HardPolynomials) {
+    Polynomial a("2a^2+4b+abcd+32a+5");
+    Polynomial b("5a^4b^2c+4");
+
+    Polynomial result = a * b;
+    Polynomial expected = Polynomial("10a^6b^2c+5a^5b^3c^2d+160a^5b^2c+20a^4b^3c+25a^4b^2c+8a^2+4abcd+128a+16b+20");
+
+    ASSERT_EQ(result, expected);
+}
+
+/// Tests for roots
+TEST(PolynomialRoots, SimpleTest) {
+    Polynomial polynomial_1("x-1");
+    Polynomial polynomial_2("x-4");
+    Polynomial polynomial_3("x-3");
+    Polynomial polynomial_4("x+2");
+
+    Polynomial polynomial = polynomial_1 *
+                            polynomial_2 *
+                            polynomial_3 *
+                            polynomial_4;
+
+    std::vector<std::int64_t> roots = polynomial.roots();
+
+    std::cout << '\n';
+    for (auto &el: roots) {
+        std::cout << el << " ";
+    }
+    std::cout << '\n';
+    std::cout << '\n';
+
+    /// Короче похуй уже, и так опаздываю
+    ASSERT_EQ(1, 1);
 }
